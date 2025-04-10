@@ -1,8 +1,4 @@
-/**
- * Welcome to this shiny step counter app -_-
- */
 package edu.wpi.cs.cs4518.stepcounter_starter
-
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -16,15 +12,12 @@ import androidx.lifecycle.Observer
 import edu.wpi.cs.cs4518.stepcounter_starter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
-
 	private lateinit var binding: ActivityMainBinding
 	private val viewModel: CounterViewModel by viewModels()
 
 	private lateinit var sensorManager: SensorManager
 	private var linearAccelerometer: Sensor? = null
-
-	var isSensorActive = false
-
+	private var isSensorActive = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -39,7 +32,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 			binding.textViewCounter.text = count.toString()
 		})
 
-		// Start tracking sensor data
+		// Start button
 		binding.buttonStart.setOnClickListener {
 			if (!isSensorActive) {
 				Log.d(TAG, "Start button clicked")
@@ -48,20 +41,23 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 					isSensorActive = true
 					Log.d(TAG, "Sensor registered")
 				} ?: Log.e(TAG, "Linear Accelerometer not available")
-			} else {
-				Log.d(TAG, "Sensor already active, ignoring start request.")
 			}
 		}
 
-
-		// Stop tracking sensor data
+		// Stop button
 		binding.buttonStop.setOnClickListener {
-			if (isSensorActive){
+			if (isSensorActive) {
 				Log.d(TAG, "Stop button clicked")
 				sensorManager.unregisterListener(this)
 				isSensorActive = false
 				Log.d(TAG, "Sensor unregistered")
 			}
+		}
+
+		// Add Reset button functionality
+		binding.buttonReset.setOnClickListener {
+			Log.d(TAG, "Reset button clicked")
+			viewModel.resetSteps()
 		}
 	}
 
@@ -72,11 +68,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 	}
 
 	override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-		// Not needed for now
+		// Not needed
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		if (isSensorActive) {
+			sensorManager.unregisterListener(this)
+		}
 	}
 
 	companion object {
 		private const val TAG = "MainActivity"
 	}
-
 }
