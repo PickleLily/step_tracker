@@ -1,6 +1,7 @@
 plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.kotlin.android)
+	// Remove alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -46,17 +47,21 @@ android {
 }
 
 dependencies {
-
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
 	implementation(libs.material)
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
+	// Remove Room dependencies
+	// implementation(libs.androidx.room.common.jvm)
+	// implementation(libs.androidx.room.runtime.android)
+	// kapt("androidx.room:room-compiler:2.6.1")
+	// implementation("androidx.room:room-runtime:2.6.1")
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
 
-	implementation("com.github.psambit9791:jdsp:3.1.0"){
+	implementation("com.github.psambit9791:jdsp:3.1.0") {
 		exclude(group = "org.apache.maven.surefire", module = "common-java5")
 	}
 
@@ -65,7 +70,6 @@ dependencies {
 	implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
 	// Coroutines
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 }
