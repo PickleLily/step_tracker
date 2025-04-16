@@ -7,13 +7,15 @@ import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 object StepCounterAlgorithm {
 	private const val TAG = "StepCounterAlgorithm"
 	private const val WINDOW_SIZE = 5          // Smoothing window size
-	private const val HEIGHT_THRESHOLD = 2.0   // Minimum peak height in m/s²
-	private const val MIN_PEAK_DISTANCE = 15   // Minimum samples between peaks
+	private const val HEIGHT_THRESHOLD = 2.5   // Minimum peak height in m/s²
+	private const val MIN_PEAK_DISTANCE = 20   // Minimum samples between peaks
 	private const val DEBOUNCE_TIME = 400      // Minimum time between steps (ms)
 	private var lastStepTime = 0L              // Last step timestamp
 	private var lastPeakIndex = -MIN_PEAK_DISTANCE - 1  // Last peak index for distance check
 
 	fun detectSteps(sensorData: List<FloatArray>, currentTime: Long): Int {
+
+		lastPeakIndex = -MIN_PEAK_DISTANCE - 1
 		try {
 			// Extract magnitudes and convert to DoubleArray
 			val magnitudes = sensorData.map { it[0].toDouble() }.toDoubleArray()
