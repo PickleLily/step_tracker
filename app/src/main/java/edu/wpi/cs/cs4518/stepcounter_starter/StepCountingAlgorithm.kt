@@ -14,6 +14,7 @@ object StepCounterAlgorithm {
 	private var lastPeakIndex = -MIN_PEAK_DISTANCE - 1  // Last peak index for distance check
 
 	fun detectSteps(sensorData: List<FloatArray>, currentTime: Long): Int {
+		lastPeakIndex = -MIN_PEAK_DISTANCE - 1
 		try {
 			// Extract magnitudes and convert to DoubleArray
 			val magnitudes = sensorData.map { it[0].toDouble() }.toDoubleArray()
